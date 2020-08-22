@@ -1,11 +1,10 @@
 var timerEl = document.getElementById('countdown');
-var mainEl = document.getElementById('main');
 var startBtn = document.getElementById('start');
 var title = document.getElementById('title-box');
 
 // Timer that counts down from 60
 function countdown() {
-    clearTitle();
+    clearStart();
 
     // Sets amount of time in the countdown
     var timeLeft = 60;
@@ -26,7 +25,7 @@ function countdown() {
     }, 1000); // Refers to miliseconds per timer tick 1000 = 1s
 }
 
-function clearTitle() {
+function clearStart() {
     title.textContent = '';
 }
 
