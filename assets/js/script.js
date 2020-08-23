@@ -2,7 +2,7 @@ var title = document.getElementById('title-box');
 var timerEl = document.getElementById('countdown');
 var startBtn = document.getElementById('start');
 var quizContainer = document.getElementById('quiz');
-var resultsContainer = document.getElementById('results');
+var resultsEl = document.getElementById('results');
 var questionEl = document.getElementById('question');
 var choiceEl = document.getElementById('choices');
 let timeLeft = "";
@@ -62,14 +62,22 @@ let questionArray = [
 // }
 
 var buildQuiz = function(){
+
     for (i = 0; i < questionArray.length; i++) {
+
+        // if out of time take user to result screen
+        if (timeLeft <= 0) {
+            showResults;
+        }
 
         // display appropriate question
         // console.log(questionArray[i].question);
         questionEl.textContent = questionArray[i].question;
-
+        
         //create buttons for each answer until last choice for [i] question
         for (j = 0; j < questionArray[i].choices.length; j++){
+            
+            // console.log (questionArray[i].choices.length);
             myBtn = document.createElement("BUTTON");
 
             // console.log(questionArray[i].choices[j]);
@@ -85,12 +93,10 @@ var buildQuiz = function(){
                 // parseFloat to convert clickedAnswer from string to int
                 var clickedAnswer = parseFloat(e.target.id);
                 var actualAnswer = questionArray[i].answer;
-                // console.log("clicked answer is " + typeof clickedAnswer);
-                // console.log("clicked answer is " + typeof actualAnswer);
-
-                // compare chosen answer with correct answer
                 console.log("correct answer is " + questionArray[i].answer);
                 console.log("chosen answer is " + clickedAnswer);
+
+                // compare chosen answer with correct answer
 
                 if (clickedAnswer === actualAnswer) {
                     console.log("Correct!");
@@ -101,8 +107,7 @@ var buildQuiz = function(){
                 }
             });
         }
-
-        break;
+        return;
     }
 }
 
@@ -110,7 +115,9 @@ var buildQuiz = function(){
 // function hideEl() {}
 
 // run after user has finished test or timeLeft === 0
-var showResults = function() {}
+var showResults = function() {
+
+}
 
 // Timer that counts down from 60
 var countdown = function() {
