@@ -16,42 +16,42 @@ let questionArray = [
     { // Array 0
         question: "Inside of which HTML element do we put the JavaScript?",
         choices: ["javascript", "js", "scripting", "script"],
-        answer: 4
+        answer: 3
     }, 
     { // Array 1
         question: "[ a = 8 + '8'; ] What is the string value of a?",
         choices: ["16", "Run Time Error", "88", "Null"],
-        answer: 3
+        answer: 2
     }, 
     { // Array 2
         question: "Which of the following will write the message “Hello World” in an alert box?",
         choices: ["alertBox('Hello World!)", "alert(Hello World!)", "msgAlert('Hello World!')", "alert('Hello World!')"],
-        answer: 4
+        answer: 3
     }, 
     { // Array 3
         question: "How do you find the minimum of x and y using JavaScript?",
         choices: ["Math.min(x,y)", "min(x,y);", "Math.min(xy)", "min(xy);"],
-        answer: 1
+        answer: 0
     }, 
     { // Array 4
         question: "Which JavaScript label catches all the values, except for the ones specified?",
         choices: ["catch", "default", "try", "label"],
-        answer: 2
+        answer: 1
     }, 
     { // Array 5
         question: "[ Boolean(3<7) ] What will the code return?",
         choices: ["true", "false", "NaN", "SyntaxError"],
-        answer: 1
+        answer: 0
     }, 
     { // Array 6
         question: "JavaScript is a ___ -side programming language.",
         choices: ["Client", "Server", "Both", "Neither"],
-        answer:  3
+        answer:  2
     }, 
     { // Array 7
         question: "Which method will you use to round the number 24.76 to the nearest integer?",
         choices: ["round(24.76);", "rnd(24.76);", "Math.rnd(24.76);", "Math.round(24.76);"],
-        answer: 4
+        answer: 3
     }
 ];
 
@@ -65,14 +65,14 @@ var buildQuiz = function(){
     for (i = 0; i < questionArray.length; i++) {
 
         // display appropriate question
-        console.log(questionArray[i].question);
+        // console.log(questionArray[i].question);
         questionEl.textContent = questionArray[i].question;
 
         //create buttons for each answer until last choice for [i] question
         for (j = 0; j < questionArray[i].choices.length; j++){
             myBtn = document.createElement("BUTTON");
 
-            console.log(questionArray[i].choices[j]);
+            // console.log(questionArray[i].choices[j]);
             myBtn.innerHTML = questionArray[i].choices[j];
             myBtn.setAttribute("id", j);
             // myBtn.innerHTML = "text";
@@ -80,11 +80,19 @@ var buildQuiz = function(){
 
             myBtn = document.getElementById(j);
             myBtn.addEventListener("click", function (e) {
+
+                // variables storing clicked answer and actual answer
+                // parseFloat to convert clickedAnswer from string to int
+                var clickedAnswer = parseFloat(e.target.id);
+                var actualAnswer = questionArray[i].answer;
+                // console.log("clicked answer is " + typeof clickedAnswer);
+                // console.log("clicked answer is " + typeof actualAnswer);
+
                 // compare chosen answer with correct answer
                 console.log("correct answer is " + questionArray[i].answer);
-                console.log("chosen answer is " + e.target.id);
+                console.log("chosen answer is " + clickedAnswer);
 
-                if (e.target.id === questionArray[i].answer) {
+                if (clickedAnswer === actualAnswer) {
                     console.log("Correct!");
                     correctAnswers++;
                 } else {
@@ -141,24 +149,3 @@ var startGame = function() {
 startBtn.addEventListener("click", function() {
     startGame();
 });
-
-
-/* for ( var i = 0; i < questions.length; i++ ) {
-    question = questions[i][0];
-    var question = document.createElement("div");
-    var options = questions[i].choices;
-    document.body.appendChild(document.createElement("br"));
-        var name = "radio"+i; 
-    for ( var opt in options ) {
-    
-        var radioEle = document.createElement("input");
-        radioEle.type = "radio";          
-        radioEle.value = options[opt];
-        radioEle.name = name;
-        document.body.appendChild(radioEle);
-        var label = document.createElement("Label");
-        label.innerHTML = options[opt];
-        document.body.appendChild(label);
-        document.body.appendChild(document.createElement("br"));
-    }
-} */
