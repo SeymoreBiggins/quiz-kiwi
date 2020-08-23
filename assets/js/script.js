@@ -5,7 +5,7 @@ let timeLeft = "";
 var quizContainer = document.getElementById('quiz');
 var resultsContainer = document.getElementById('results');
 
-const questions = [
+const questionArray = [
     
     // IMPORTANT when checking correct answers from question array
     //  subtract 1 from answer (array counts starting from 0) so q1 answer be 3 in array
@@ -58,38 +58,7 @@ const questions = [
 // }
 
 var buildQuiz = function(){
-    // stores output to go to HTML
-    var output = [];
-
-    // for each question
-    questions.forEach(
-        (currentQuestion, questionNumber) => {
-            // we'll want to store the list of answer choices
-            const choices = [];
-
-            // and for each available answer...
-            for(choiceNumber in currentQuestion.choices){
-
-                // ...add an html radio button
-                choices.push(
-                    `<label>
-                        <input type="radio" name="question${questionNumber}" value="${choiceNumber}">
-                        ${choiceNumber} :
-                        ${currentQuestion.choices[choiceNumber]}
-                    </label>`
-                );
-            }
-
-            // add this question and its choices to the output
-            output.push(
-            `<div class="question"> ${currentQuestion.question} </div>
-            <div class="choices"> ${choices.join('')} </div>`
-            );
-        }
-    );
-
-    // combine output list into one string of HTML
-    quizContainer.innerHTML = output.join('');
+    questionArray.forEach(consoleItem);
 }
 
 // run after user has finished test or timeLeft === 0
@@ -99,7 +68,7 @@ var showResults = function() {}
 var countdown = function() {
 
     // Sets amount of time in the countdown
-    timeLeft = 80;
+    timeLeft = 20;
   
     // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
     var timeInterval = setInterval(function() {
@@ -112,7 +81,6 @@ var countdown = function() {
         } else {
             timerEl.textContent = '';
             clearInterval(timeInterval);
-            displayMessage();
         }
     }, 1000); // Refers to miliseconds per timer tick 1000 = 1s
 };
@@ -133,6 +101,10 @@ var startGame = function() {
 startBtn.addEventListener("click", function() {
     startGame();
 });
+
+function consoleItem(item, index, arr) {
+    console.log("a[" + index + "] = " + JSON.stringify(item));
+}
 
 /* for ( var i = 0; i < questions.length; i++ ) {
     question = questions[i][0];
