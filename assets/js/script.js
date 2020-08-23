@@ -1,17 +1,21 @@
 var title = document.getElementById('title-box');
 var timerEl = document.getElementById('countdown');
 var startBtn = document.getElementById('start');
-let timeLeft = "";
 var quizContainer = document.getElementById('quiz');
 var resultsContainer = document.getElementById('results');
+var questionEl = document.getElementById('question');
+var choiceEl = document.getElementById('choices');
+let timeLeft = "";
+var correctAnswers = "";
 
-const questionArray = [
+
+let questionArray = [
     
     // IMPORTANT when checking correct answers from question array
     //  subtract 1 from answer (array counts starting from 0) so q1 answer be 3 in array
     { // Array 0
         question: "Inside of which HTML element do we put the JavaScript?",
-        choices: ["<javascript>", "<js>", "<scripting>", "<script>"],
+        choices: ["javascript", "js", "scripting", "script"],
         answer: 4
     }, 
     { // Array 1
@@ -58,8 +62,44 @@ const questionArray = [
 // }
 
 var buildQuiz = function(){
-    questionArray.forEach(consoleItem);
+    for (i = 0; i < questionArray.length; i++) {
+
+        // display appropriate question
+        console.log(questionArray[i].question);
+        questionEl.textContent = questionArray[i].question;
+
+        //create buttons for each answer until last choice for [i] question
+        for (j = 0; j < questionArray[i].choices.length; j++){
+            myBtn = document.createElement("BUTTON");
+
+            console.log(questionArray[i].choices[j]);
+            myBtn.innerHTML = questionArray[i].choices[j];
+            myBtn.setAttribute("id", j);
+            // myBtn.innerHTML = "text";
+            document.body.appendChild(myBtn);
+
+            myBtn = document.getElementById(j);
+            myBtn.addEventListener("click", function (e) {
+                // compare chosen answer with correct answer
+                console.log("correct answer is " + questionArray[i].answer);
+                console.log("chosen answer is " + e.target.id);
+
+                if (e.target.id === questionArray[i].answer) {
+                    console.log("Correct!");
+                    correctAnswers++;
+                } else {
+                    timeLeft = timeLeft - 5;
+                    console.log("Wrong!");
+                }
+            });
+        }
+
+        break;
+    }
 }
+
+// Hide content thats currently unused
+// function hideEl() {}
 
 // run after user has finished test or timeLeft === 0
 var showResults = function() {}
@@ -68,7 +108,7 @@ var showResults = function() {}
 var countdown = function() {
 
     // Sets amount of time in the countdown
-    timeLeft = 20;
+    timeLeft = 60;
   
     // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
     var timeInterval = setInterval(function() {
@@ -102,9 +142,6 @@ startBtn.addEventListener("click", function() {
     startGame();
 });
 
-function consoleItem(item, index, arr) {
-    console.log("a[" + index + "] = " + JSON.stringify(item));
-}
 
 /* for ( var i = 0; i < questions.length; i++ ) {
     question = questions[i][0];
