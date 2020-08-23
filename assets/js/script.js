@@ -8,6 +8,10 @@ var choiceEl = document.getElementById('choices');
 let timeLeft = "";
 var correctAnswers = "";
 
+// iteration counters
+var i = 0;
+var j = 0;
+
 
 let questionArray = [
     
@@ -62,57 +66,50 @@ let questionArray = [
 // }
 
 var buildQuiz = function(){
-
-    for (i = 0; i < questionArray.length; i++) {
-
-        // if out of time take user to result screen
-        if (timeLeft <= 0) {
-            showResults;
-        }
-
-        // display appropriate question
-        // console.log(questionArray[i].question);
-        questionEl.textContent = questionArray[i].question;
-        
-        //create buttons for each answer until last choice for [i] question
-        for (j = 0; j < questionArray[i].choices.length; j++){
-            
-            // console.log (questionArray[i].choices.length);
-            myBtn = document.createElement("BUTTON");
-
-            // console.log(questionArray[i].choices[j]);
-            myBtn.innerHTML = questionArray[i].choices[j];
-            myBtn.setAttribute("id", j);
-            // myBtn.innerHTML = "text";
-            document.body.appendChild(myBtn);
-
-            myBtn = document.getElementById(j);
-            myBtn.addEventListener("click", function (e) {
-
-                // variables storing clicked answer and actual answer
-                // parseFloat to convert clickedAnswer from string to int
-                var clickedAnswer = parseFloat(e.target.id);
-                var actualAnswer = questionArray[i].answer;
-                console.log("correct answer is " + questionArray[i].answer);
-                console.log("chosen answer is " + clickedAnswer);
-
-                // compare chosen answer with correct answer
-
-                if (clickedAnswer === actualAnswer) {
-                    console.log("Correct!");
-                    correctAnswers++;
-                } else {
-                    timeLeft = timeLeft - 5;
-                    console.log("Wrong!");
-                }
-            });
-        }
-        return;
+    if (i <= questionArray.length) {
+        currentQA();
     }
 }
 
-// Hide content thats currently unused
-// function hideEl() {}
+function currentQA() {
+    // display appropriate question
+    console.log(questionArray[i].question);
+    questionEl.textContent = questionArray[i].question;
+        
+    for (j = 0; j < questionArray[i].choices.length; j++){
+
+        var myBtn = document.createElement("BUTTON");
+        myBtn.innerHTML = questionArray[i].choices[j];
+        myBtn.setAttribute("id", j);
+        document.body.appendChild(myBtn);
+
+        myBtn = document.getElementById(j);
+        myBtn.addEventListener("click", function (e) {
+
+            // variables storing clicked answer and actual answer
+            // parseFloat to convert clickedAnswer from string to int
+            var clickedAnswer = parseFloat(e.target.id);
+            var actualAnswer = questionArray[i].answer;
+            console.log("correct answer is " + questionArray[i].answer);
+            console.log("chosen answer is " + clickedAnswer);
+
+            // compare chosen answer with correct answer
+            if (clickedAnswer === actualAnswer) {
+                console.log("Correct!");
+                correctAnswers++;
+                i++;
+                // remove buttons
+                buildQuiz();
+            } else {
+                timeLeft = timeLeft - 5;
+                console.log("Wrong!");
+                i++;
+                // remove buttons
+                buildQuiz();
+            }
+        });
+    }
+}
 
 // run after user has finished test or timeLeft === 0
 var showResults = function() {
