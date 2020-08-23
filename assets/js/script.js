@@ -68,12 +68,13 @@ let questionArray = [
 var buildQuiz = function(){
     if (i <= questionArray.length) {
         currentQA();
+    } else {
+        showResults();
     }
 }
 
 function currentQA() {
     // display appropriate question
-    console.log(questionArray[i].question);
     questionEl.textContent = questionArray[i].question;
         
     for (j = 0; j < questionArray[i].choices.length; j++){
@@ -81,7 +82,7 @@ function currentQA() {
         var myBtn = document.createElement("BUTTON");
         myBtn.innerHTML = questionArray[i].choices[j];
         myBtn.setAttribute("id", j);
-        document.body.appendChild(myBtn);
+        choiceEl.appendChild(myBtn)
 
         myBtn = document.getElementById(j);
         myBtn.addEventListener("click", function (e) {
@@ -98,16 +99,22 @@ function currentQA() {
                 console.log("Correct!");
                 correctAnswers++;
                 i++;
-                // remove buttons
+                removeBtn();
                 buildQuiz();
             } else {
                 timeLeft = timeLeft - 5;
                 console.log("Wrong!");
                 i++;
-                // remove buttons
+                removeBtn();
                 buildQuiz();
             }
         });
+    }
+}
+
+function removeBtn() {
+    while(choiceEl.hasChildNodes()) {
+        choiceEl.removeChild(choiceEl.firstChild);
     }
 }
 
