@@ -2,16 +2,15 @@ var title = document.getElementById('title-box');
 var timerEl = document.getElementById('countdown');
 var startBtn = document.getElementById('start');
 var quizContainer = document.getElementById('quiz');
-var resultsEl = document.getElementById('results');
-var questionEl = document.getElementById('question');
-var choiceEl = document.getElementById('choices');
-let timeLeft = "";
-var correctAnswers = "";
+var scoresEl = document.getElementById('highscores');
+var questionEl = document.createElement("P");
+var choiceEl = document.createElement("P");
+let timeLeft;
+var correctAnswers = 0;
 
 // iteration counters
 var i = 0;
 var j = 0;
-
 
 let questionArray = [
     
@@ -66,7 +65,7 @@ let questionArray = [
 // }
 
 var buildQuiz = function(){
-    if (i <= questionArray.length) {
+    if (i+1 <= questionArray.length) {
         currentQA();
     } else {
         showResults();
@@ -76,23 +75,25 @@ var buildQuiz = function(){
 function currentQA() {
     // display appropriate question
     questionEl.textContent = questionArray[i].question;
+    quizContainer.appendChild(questionEl);
+    quizContainer.appendChild(choiceEl);
         
     for (j = 0; j < questionArray[i].choices.length; j++){
+        
+            var myBtn = document.createElement("BUTTON");
+            myBtn.innerHTML = questionArray[i].choices[j];
+            myBtn.setAttribute("id", j);
+            choiceEl.appendChild(myBtn)
 
-        var myBtn = document.createElement("BUTTON");
-        myBtn.innerHTML = questionArray[i].choices[j];
-        myBtn.setAttribute("id", j);
-        choiceEl.appendChild(myBtn)
-
-        myBtn = document.getElementById(j);
-        myBtn.addEventListener("click", function (e) {
+            myBtn = document.getElementById(j);
+            myBtn.addEventListener("click", function (e) {
 
             // variables storing clicked answer and actual answer
             // parseFloat to convert clickedAnswer from string to int
             var clickedAnswer = parseFloat(e.target.id);
             var actualAnswer = questionArray[i].answer;
-            console.log("correct answer is " + questionArray[i].answer);
-            console.log("chosen answer is " + clickedAnswer);
+            // console.log("correct answer is " + questionArray[i].answer);
+            // console.log("chosen answer is " + clickedAnswer);
 
             // compare chosen answer with correct answer
             if (clickedAnswer === actualAnswer) {
@@ -118,16 +119,39 @@ function removeBtn() {
     }
 }
 
+function removeQuiz() {
+    while(quizContainer.hasChildNodes()) {
+        quizContainer.removeChild(quizContainer.firstChild);
+    }
+}
+
 // run after user has finished test or timeLeft === 0
 var showResults = function() {
+    removeBtn();
+    removeQuiz();
+    var scoreReadout = document.createElement("P");
+    scoreReadout.innerText = "All done! Your score was " + correctAnswers + "/" + questionArray.length + ". Would you like immortalize your score on the LEADERBOARD OF ETERNITY";
+    quizContainer.appendChild(scoreReadout);
 
+    var submitBtn = document.createElement("BUTTON");
+    submitBtn.innerHTML = "yeah sure";
+    quizContainer.appendChild(submitBtn);
+    // place highscore logic here
+
+    var restartBtn = document.createElement("BUTTON");
+    restartBtn.innerHTML = "Click Here to Play Again";
+    quizContainer.appendChild(restartBtn);
+    restartBtn.addEventListener("click", function(){
+        removeQuiz();
+        startGame();
+    });
 }
 
 // Timer that counts down from 60
 var countdown = function() {
 
     // Sets amount of time in the countdown
-    timeLeft = 60;
+    timeLeft = 100;
   
     // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
     var timeInterval = setInterval(function() {
@@ -140,6 +164,7 @@ var countdown = function() {
         } else {
             timerEl.textContent = '';
             clearInterval(timeInterval);
+            showResults();
         }
     }, 1000); // Refers to miliseconds per timer tick 1000 = 1s
 };
@@ -150,10 +175,11 @@ var clearStart = function() {
 };
 
 var startGame = function() {
+    i = 0;
+    timeLeft = 60;
     clearStart();
     countdown();
     buildQuiz();
-    showResults();
 };
 
 // It works don't touch it
